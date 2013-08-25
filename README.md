@@ -3,6 +3,8 @@ go-pal
 
 A REST-ful Paypal client for Go!
 
+Is currently under development and should not be expected to work in current form
+
 ## Install
 
         go get github.com/hahnicity/go-pal
