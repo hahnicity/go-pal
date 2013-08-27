@@ -51,11 +51,27 @@ type CreditCardToken struct {
     Expire_month int
 }
 
+type DateTime struct {
+    // XXX TODO    
+}
+
 type Details struct {
     Shipping string    
     Subtotal string
     Tax string
     Fee string
+}
+
+type ExecutionRequest struct {
+    Payer_id string
+    Transactions []Transaction    
+}
+
+type ExecutionResponse struct {
+    Intent string
+    Payer Payer
+    Transactions []Transaction
+    Links []Link   
 }
 
 type FundingInstrument struct {
@@ -74,6 +90,12 @@ type Item struct {
 type ItemList struct {
     Items []Item
     Shipping_address ShippingAddress    
+}
+
+type Link struct {
+    href string
+    rel string
+    method string    
 }
 
 type Payer struct {
@@ -109,11 +131,6 @@ type PaymentResponse struct {
     Update_time string // XXX date_time
 }
 
-type PaymentExecution struct {
-    Payer_id string
-    Transactions []Transaction    
-}
-
 type RedirectURLs struct {
     Return_url string
     Cancel_url string    
@@ -147,6 +164,7 @@ type ShippingAddress struct {
 
 }
 
+// XXX I really doubt this is going to get Translated into JSON
 type Transaction struct {
     Amount Amount    
     Description string

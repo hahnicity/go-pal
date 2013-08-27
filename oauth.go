@@ -2,7 +2,6 @@ package gopal
 
 import (
     "encoding/json"
-    "io/ioutil"
     "strings"
 )
 
@@ -20,30 +19,18 @@ type Application struct {
     secret string
 }
 
-// Returns the a JSON-like response of calling the OAuth API
-func GetOAuthResponse(app *Application) OAuthResponse {
-    resp := makeOAuthRequest(app)
-    defer resp.Body.Close()
-    checkIfTokenReceived(resp.Status)
-    rawResponse, _ := ioutil.ReadAll(resp.Body)
-    var o OAuthResponse
-    err := json.Unmarshal(rawResponse, &o)
-    checkForError(err)
-    return o
-}
-
 // Returns an OAuth token from PayPal
-func GetToken(endpoint, id, secret string) string {
+func GetToken(endpoint, id, secret string) (*string, error) {
     app := MakeApplication(endpoint, id, secret)
-    return GetOAuthResponse(app).Access_token
-} 
-
-// Check to ensure a generic error was not propogated
-func checkForError(err error) {
+    rawResponse, err := makeOAuthRequest(app)
     if err != nil {
-        panic(err)    
-    }
-}
+        return nil, err    
+    } 
+    var o OAuthResponse
+    err = json.Unmarshal(rawResponse, &o)
+    raiseIfError(err)
+    return &o.Access_token, nil
+} 
 
 // Check to see if an authentication token was received
 func checkIfTokenReceived(status string) {
