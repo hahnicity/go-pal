@@ -7,12 +7,6 @@ https://developer.paypal.com/webapps/developer/docs/api/#payment-object
 
 package gopal
 
-type Amount struct {
-    Currency string
-    Total string
-    Details Details    
-}
-
 type Address struct {
     Line1 string
     Line2 string
@@ -21,6 +15,16 @@ type Address struct {
     Postal_code string
     State string
     Phone string
+}
+
+type Amount struct {
+    Currency string
+    Total string
+    Details Details    
+}
+
+type Capture struct {
+    // XXX TODO    
 }
 
 type CreditCard struct {
@@ -87,15 +91,22 @@ type PayerInfo struct {
     Shipping_address ShippingAddress    
 }
 
-type Payment struct {
+type PaymentRequest struct {
+    Intent string    
+    Payer Payer
+    Transactions []Transaction
+    Redirect_urls RedirectURLs
+}
+
+type PaymentResponse struct {
     Intent string
     Payer Payer
     Transactions []Transaction
     Redirect_urls RedirectURLs
     Id string
-    Create_time // XXX date_time
+    Create_time string // XXX date_time
     State string
-    Update_time // XXX date_time
+    Update_time string // XXX date_time
 }
 
 type PaymentExecution struct {
@@ -108,15 +119,19 @@ type RedirectURLs struct {
     Cancel_url string    
 }
 
+type Refund struct {
+    // XXX TODO    
+}
+
 type Sale struct {
     Id string    
     Amount Amount
     Description string
-    Create_time // XXX date_time
+    Create_time string // XXX date_time
     State string
     Sale_id string
     Parent_payment string
-    Update_time // XXX date_time
+    Update_time string // XXX date_time
 }
 
 type ShippingAddress struct {
@@ -136,5 +151,5 @@ type Transaction struct {
     Amount Amount    
     Description string
     Item_list ItemList
-    Related_resources interface{}
+    Related_resources interface{} // Sale, Authorization, Capture, Refund
 }

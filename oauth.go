@@ -2,9 +2,7 @@ package gopal
 
 import (
     "encoding/json"
-    "github.com/hahnicity/go-pal/config"
     "io/ioutil"
-    "net/http"
     "strings"
 )
 
@@ -20,29 +18,6 @@ type Application struct {
     Endpoint string
     id string    
     secret string
-}
-
-// Add necessary request headers
-func addOAuthHeaders(app *Application, req *http.Request) *http.Request {
-    req.SetBasicAuth(app.id, app.secret)
-    req.Header.Add("Accept", "application/json")
-    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-    return req
-}
-
-// Receive a Response object we will use to get an oauth token
-func makeOAuthRequest(app *Application) *http.Response {
-    client := &http.Client{}
-    req, err := http.NewRequest(
-        "POST", 
-        app.Endpoint + config.OauthEndpoint,
-        strings.NewReader("grant_type=client_credentials"),
-    )
-    checkForError(err)
-    req = addOAuthHeaders(app, req)
-    resp, err := client.Do(req)
-    checkForError(err)
-    return resp
 }
 
 // Returns the a JSON-like response of calling the OAuth API
